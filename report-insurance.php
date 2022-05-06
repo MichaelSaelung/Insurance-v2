@@ -59,7 +59,7 @@
                             $years = $insuranceUnit['years'];
                             $doorNo = $insuranceUnit['doorNo'];
                             $insOrUnIns = $insuranceUnit['insOrUnIns'];
-                            $pilisNo = $insuranceUnit['pilisNo'];
+                            $polisNo = $insuranceUnit['polisNo'];
                             $currency = $insuranceUnit['currency'];
                             $sumInsured = $insuranceUnit['sumInsured'];
                             $rate = $insuranceUnit['rate'];
@@ -78,7 +78,7 @@
                                 <td><?php echo $years;?></td>
                                 <td><?php echo $doorNo;?></td>
                                 <td><?php echo $insOrUnIns;?></td>
-                                <td><?php echo $pilisNo++;?></td>
+                                <td><?php echo $polisNo++;?></td>
                                 <td><?php echo $currency;?></td>
                                 <td><?php echo $sumInsured;?></td>
                                 <td><?php echo $rate;?></td>
@@ -140,24 +140,14 @@ $(document).ready(function() {
                 extend: 'excel',
                 title: 'Customized EXCEL Title',
                 filename: 'customized_excel_file_name',
-                className: 'btn btn-danger',
-                exportOptions: {
-                    columns: ':visible',
-                },
-                customize: function (win) {
-                    $(win.document.body).find('table').addClass('display').css('font-size', '9px');
-                    $(win.document.body).find('tr:nth-child(odd) td').each(function(index){
-                        $(this).css('background-color','#D0D0D0');
-                    });
-                    $(win.document.body).find('h1').css('text-align','center');
-                }
+                className: 'btn btn-danger'
             }, 
             {
                 extend: 'print',
                 text: 'Print current page',
                 title: 'Customized EXCEL Title',
                 filename: 'customized_excel_file_name',
-                autoPrint: false,
+                autoPrint: true,
                 className: 'btn btn-danger',
                 exportOptions: {
                     columns: ':visible',

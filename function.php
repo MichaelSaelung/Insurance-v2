@@ -8,6 +8,22 @@
     $password = "";
     $database = "Insurance";
     $conn = mysqli_connect($hostname,$username,$password,$database);
+    
+    function reloadAlerts($conn, $idInsurance, $endPeriode){
+
+        mysqli_query($conn, "UPDATE alert SET status = 0 WHERE idInsurance = '$idInsurance'");
+        $newEndPeriode = date("Y-m-d", strtotime($endPeriode));
+        $dateOneMonthBefore = date('Y-m-d', strtotime("+1 month"));
+        if($dateOneMonthBefore >= $newEndPeriode){
+            $message = $newEndPeriode;
+            $getAllAlert = mysqli_query($conn, "SELECT * FROM alert WHERE idInsurance = '$idInsurance' AND status = 1");
+            $count = mysqli_num_rows($getAllAlert);
+            if($count <= 0){
+                mysqli_query($conn, "INSERT INTO alert (idInsurance, message, status) VALUES ('$idInsurance', '$message', 1)");
+            }
+        }
+    }
+
 
     if(isset($_POST['addNewInsurance'])){
         $jobSite = $_POST['jobSite'];
@@ -17,7 +33,7 @@
         $years = $_POST['years'];
         $doorNo = $_POST['doorNo'];
         $insOrUnIns = $_POST['insOrUnIns'];
-        $pilisNo = $_POST['pilisNo'];
+        $polisNo = $_POST['polisNo'];
         $currency = $_POST['currency'];
         $sumInsured = $_POST['sumInsured'];
         $rate = $_POST['rate'];
@@ -27,12 +43,13 @@
         $comments = $_POST['comments'];
 
         $addInsuranceUnit = mysqli_query($conn, "INSERT INTO insuranceUnit (idJobSite, unitType, chassis, engine, 
-        years, doorNo, insOrUnIns ,pilisNo ,currency ,sumInsured ,rate ,startPeriode, endPeriode ,amount ,comments) 
+        years, doorNo, insOrUnIns ,polisNo ,currency ,sumInsured ,rate ,startPeriode, endPeriode ,amount ,comments) 
         VALUES ('$jobSite','$unitType','$chassis','$engine', 
-        '$years','$doorNo','$insOrUnIns','$pilisNo', '$currency','$sumInsured','$rate','$startPeriode', '$endPeriode' ,'$amount','$comments')");
+        '$years','$doorNo','$insOrUnIns','$polisNo', '$currency','$sumInsured','$rate','$startPeriode', '$endPeriode' ,'$amount','$comments')");
 
         if($addInsuranceUnit){
             header('location:index.php');
+            
         }else{
             echo "Gagal";
             header('location:index.php');
@@ -47,7 +64,7 @@
         $years = $_POST['years'];
         $doorNo = $_POST['doorNo'];
         $insOrUnIns = $_POST['insOrUnIns'];
-        $pilisNo = $_POST['pilisNo'];
+        $polisNo = $_POST['polisNo'];
         $currency = $_POST['currency'];
         $sumInsured = $_POST['sumInsured'];
         $rate = $_POST['rate'];
@@ -58,11 +75,13 @@
         $idInsurance = $_POST['idInsurance'];
 
         $updateInsuranceUnit = mysqli_query($conn, "UPDATE insuranceUnit SET idJobSite = '$jobSite', unitType='$unitType',
-        chassis='$chassis', engine='$engine', years='$years', doorNo='$doorNo', insOrUnIns='$insOrUnIns', pilisNo = '$pilisNo',
-        currency = '$currency',sumInsured = '$sumInsured',rate = '$rate',startPeriode, endPeriode = '$startPeriode', '$endPeriode' ,amount = '$amount',comments = '$comments'
-        WHERE idInsurance = '$idInsurance'");
+        chassis='$chassis', engine='$engine', years='$years', doorNo='$doorNo', insOrUnIns='$insOrUnIns', polisNo = '$polisNo',
+        currency = '$currency',sumInsured = '$sumInsured',rate = '$rate', startPeriode = '$startPeriode', endPeriode = '$endPeriode',
+        amount = '$amount',comments = '$comments' WHERE idInsurance = '$idInsurance'");
+
 
         if($updateInsuranceUnit){
+            reloadAlerts($conn, $idInsurance, $endPeriode);
             header('location:index.php');
         }else{
             echo "Gagal";
@@ -72,15 +91,18 @@
 
     if(isset($_POST['DeleteInsurance'])){
         $idInsurance = $_POST['idInsurance'];
+        $endPeriode = $_POST['endPeriode'];
 
         $deleteInsuranceUnit = mysqli_query($conn, "DELETE FROM insuranceUnit WHERE idInsurance = '$idInsurance'");
-
+        
         if($deleteInsuranceUnit){
+            reloadAlerts($conn, $idInsurance, $endPeriode);
             header('location:index.php');
         }else{
             echo "Gagal";
             header('location:index.php');
         }
+
     }
 
     if(isset($_POST['addNewJobSite'])){
@@ -129,7 +151,7 @@
         $password = $_POST['password'];
         $retypePassword = $_POST['retypePassword'];
 
-        $addNewUser = mysqli_query($conn, "INSERT INTO login (email, pwd    ) VALUES ('$email', '$password')");
+        $addNewUser = mysqli_query($conn, "INSERT INTO login (email, pwd) VALUES ('$email', '$password')");
 
         if($addNewUser){
             header('location:settings.php');
@@ -165,5 +187,6 @@
             header('location:settings.php');
         }
     }
+
 
 ?>

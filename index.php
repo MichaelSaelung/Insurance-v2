@@ -7,7 +7,7 @@
 <html lang="en">
 
 <head>
-
+    
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -73,22 +73,22 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="job-site.php">
+                <a hidden class="nav-link" href="job-site.php">
                     <i class="fas fa-thin fa-sitemap"></i>
                     <span>Job Site</span>
                 </a>
             </li>
 
             <!-- Divider -->
-            <hr class="sidebar-divider">
+            <hr hidden class="sidebar-divider">
 
             <!-- Heading -->
-            <div class="sidebar-heading">
+            <div hidden class="sidebar-heading">
                 Action
             </div>
             <!-- Nav Item - Tables -->
             <li class="nav-item">
-                <a class="nav-link" href="settings.php">
+                <a hidden class="nav-link" href="settings.php">
                     <i class="fas fa-thin fa-cogs"></i>
                     <span>Settings</span>
                 </a>
@@ -124,6 +124,53 @@
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
+
+                        <!-- <li class="nav-item dropdown no-arrow mx-1">
+                            <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-bell fa-fw"></i>
+                                Counter - Alerts
+                                <?php
+                                    $getAllAlert = mysqli_query($conn, "SELECT * FROM alert WHERE status = 1");
+                                    $count = mysqli_num_rows($getAllAlert);
+                                    if($count > 9){
+                                        $count = "9+";
+                                    }
+                                ?>
+                                    <span class="badge badge-danger badge-counter"><?=$count;?></span>
+                            </a>
+                            Dropdown - Alerts
+                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                aria-labelledby="alertsDropdown">
+                                <h6 class="dropdown-header">
+                                    ALLERTS STATUS
+                                </h6>
+                                <?php                                                   
+                                    $getAllExistAlert= mysqli_query($conn, "SELECT * FROM alert WHERE status = 1");
+                                    while ($alert = mysqli_fetch_array($getAllExistAlert)){
+                                        $message = $alert['message'];
+                                        $idInsurance = $alert['idInsurance'];
+                                        $status = $alert['status'];
+                                        $date = $alert['date'];
+                                        // $newDate = date("M d, Y", strtotime($date))
+                                ?>
+                                        <a class="dropdown-item d-flex align-items-center" data-toggle="modal" data-target="#edit<?=$idInsurance?>">
+                                            <div class="mr-3">
+                                                <div class="icon-circle bg-warning">
+                                                    <i class="fas fa-exclamation-triangle text-white"></i>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="small text-gray-500"><?=$date;?></div>
+                                                <span class="font-weight-bold"><?=$message;?></span>
+                                            </div>
+                                        </a>
+                                        
+                                <?php } ?>
+                                <a class="dropdown-item text-center small text-gray-500" href="show-all-alert.php">Show All Alerts</a> 
+                            </div>
+                        </li> -->
+
                         <div class="topbar-divider d-none d-sm-block"></div>
 
                         <!-- Nav Item - User Information -->
@@ -135,11 +182,11 @@
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="settings.php" >
+                                <a hidden class="dropdown-item" href="settings.php" >
                                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Settings
                                 </a>
-                                <div class="dropdown-divider"></div>
+                                <div hidden class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Logout
@@ -166,7 +213,6 @@
                         <div class="card-body">
                             <div class="faa py-3">
 
-
                                 <a href="#" class="btn btn-primary btn-icon-split" data-toggle="modal" data-target="#myModal">
                                     <span class="icon text-white-50">
                                         <i class="fas fa-plus"></i>
@@ -181,6 +227,23 @@
                                 </a>
 
                             </div>
+                            <?php
+                                $getAllExistAlert= mysqli_query($conn, "SELECT * FROM alert WHERE status = 1");
+                                while ($alert = mysqli_fetch_array($getAllExistAlert)){
+                                    $message = $alert['message'];
+                                    $idInsurance = $alert['idInsurance'];
+                                    $status = $alert['status'];
+                                    $date = $alert['date'];
+                            ?>
+                                <div class="alert alert-danger alert-dismissible">
+                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                    <a data-toggle="modal" data-target="#edit<?=$idInsurance?>">
+                                        <strong>Perhatian!</strong> ID Insurance <?=$idInsurance;?> dengan Tanggal <?=$date;?> sudah mendekati tgl periode.
+                                    </a>
+                                </div>
+                                
+                            <?php } ?>
+
                             <div class="table-responsive">
                                 <table id="dataTable"  class="table table-bordered" width="100%" cellspacing="0">
                                     <thead>
@@ -217,7 +280,7 @@
                                                 $years = $insuranceUnit['years'];
                                                 $doorNo = $insuranceUnit['doorNo'];
                                                 $insOrUnIns = $insuranceUnit['insOrUnIns'];
-                                                $pilisNo = $insuranceUnit['pilisNo'];
+                                                $polisNo = $insuranceUnit['polisNo'];
                                                 $currency = $insuranceUnit['currency'];
                                                 $sumInsured = $insuranceUnit['sumInsured'];
                                                 $rate = $insuranceUnit['rate'];
@@ -226,6 +289,7 @@
                                                 $amount = $insuranceUnit['amount'];
                                                 $comments = $insuranceUnit['comments'];
                                                 $idJobSite = $insuranceUnit['idJobSite'];
+
                                         ?>
                                                 <tr>
                                                     <td><?=$i++;?></td>
@@ -236,7 +300,7 @@
                                                     <td><?=$years;?></td>
                                                     <!-- <td><?=$doorNo;?></td> -->
                                                     <td><?=$insOrUnIns;?></td>
-                                                    <!-- <td><?=$pilisNo;?></td> -->
+                                                    <!-- <td><?=$polisNo;?></td> -->
                                                     <!-- <td><?=$currency;?></td> -->
                                                     <!-- <td><?=$sumInsured;?></td> -->
                                                     <!-- <td><?=$rate;?></td> -->
@@ -275,51 +339,75 @@
                                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                             </div>
                                                             
-                                                            <!-- Modal body -->
-                                                            <form method="post">                                                     
-                                                                    <div class="modal-body">
-                                                                        <div class="row">
-                                                                            <div class="col-sm-4">
-                                                                                <ul class="list-unstyled mb-0">
-                                                                                    <li>Unit Type</li>
-                                                                                    <li>Chassis</li>
-                                                                                    <li>Engine</li>
-                                                                                    <li>Years</li>
-                                                                                    <li>Door No</li>
-                                                                                    <li>Ins/Un-Ins</li>
-                                                                                    <li>Polis No</li>
-                                                                                    <li>Currency type</li>
-                                                                                    <li>Sum Insured</li>
-                                                                                    <li>Rate</li>
-                                                                                    <li>startPeriode</li>
-                                                                                    <li>endPeriode</li>
-                                                                                    <li>Amount</li>
-                                                                                    <li>Comments</li>
-                                                                                </ul>
-                                                                            </div>
-                                                                            <div class="col-sm-7">
-                                                                                <ul class="list-unstyled mb-0">
-                                                                                    <li><a herf="#!"> : <?=$unitType;?></a></li>
-                                                                                    <li><a herf="#!"> : <?=$chassis;?></a></li>
-                                                                                    <li><a herf="#!"> : <?=$engine;?></a></li>
-                                                                                    <li><a herf="#!"> : <?=$years;?></a></li>
-                                                                                    <li><a herf="#!"> : <?=$doorNo;?></a></li>
-                                                                                    <li><a herf="#!"> : <?=$insOrUnIns;?></a></li>
-                                                                                    <li><a herf="#!"> : <?=$pilisNo;?></a></li>
-                                                                                    <li><a herf="#!"> : <?=$currency;?></a></li>
-                                                                                    <li><a herf="#!"> : <?=$sumInsured;?></a></li>
-                                                                                    <li><a herf="#!"> : <?=$rate;?></a></li>
-                                                                                    <li><a herf="#!"> : <?=$startPeriode;?></a></li>
-                                                                                    <li><a herf="#!"> : <?=$endPeriode;?></a></li>
-                                                                                    <li><a herf="#!"> : <?=$amount;?></a></li>
-                                                                                    <li><a herf="#!"> : <?=$comments;?></a></li>
-                                                                                </ul>
-                                                                            </div>
-                                                                        </div>
+                                                            <!-- Modal body -->                                                                
+                                                            <form method="post">
+                                                                <div class="modal-body">
+                                                                    <div class="form-floating mb-3">
+                                                                        <div class="form-row">
+                                                                            <label class="form-floating col-md-4">Job Site Name</label>
+                                                                            <label class="form-floating col-md-8">: <?=$jobSiteName;?></label>
+                                                                        </div> 
+                                                                        <div class="form-row">
+                                                                            <label class="form-floating col-md-4">Unit Type</label>
+                                                                            <label class="form-floating col-md-8">: <?=$unitType;?></label>
+                                                                        </div> 
+                                                                        <div class="form-row">
+                                                                            <label class="form-floating col-md-4">Chassis</label>
+                                                                            <label class="form-floating col-md-8">: <?=$chassis;?></label>
+                                                                        </div> 
+                                                                        <div class="form-row">
+                                                                            <label class="form-floating col-md-4">Engine</label>
+                                                                            <label class="form-floating col-md-8">: <?=$engine;?></label>
+                                                                        </div> 
+                                                                        <div class="form-row">
+                                                                            <label class="form-floating col-md-4">Years</label>
+                                                                            <label class="form-floating col-md-8">: <?=$years;?></label>
+                                                                        </div> 
+                                                                        <div class="form-row">
+                                                                            <label class="form-floating col-md-4">Door No</label>
+                                                                            <label class="form-floating col-md-8">: <?=$doorNo;?></label>
+                                                                        </div> 
+                                                                        <div class="form-row">
+                                                                            <label class="form-floating col-md-4">ins or UnIns</label>
+                                                                            <label class="form-floating col-md-8">: <?=$insOrUnIns;?></label>
+                                                                        </div> 
+                                                                        <div class="form-row">
+                                                                            <label class="form-floating col-md-4">Polis No</label>
+                                                                            <label class="form-floating col-md-8">: <?=$polisNo;?></label>
+                                                                        </div> 
+                                                                        <div class="form-row">
+                                                                            <label class="form-floating col-md-4">Currency</label>
+                                                                            <label class="form-floating col-md-8">: <?=$currency;?></label>
+                                                                        </div> 
+                                                                        <div class="form-row">
+                                                                            <label class="form-floating col-md-4">Sum Insured</label>
+                                                                            <label class="form-floating col-md-8">: <?=$sumInsured;?></label>
+                                                                        </div> 
+                                                                        <div class="form-row">
+                                                                            <label class="form-floating col-md-4">Rate</label>
+                                                                            <label class="form-floating col-md-8">: <?=$rate;?></label>
+                                                                        </div> 
+                                                                        <div class="form-row">
+                                                                            <label class="form-floating col-md-4">Start Periode</label>
+                                                                            <label class="form-floating col-md-8">: <?=$startPeriode;?></label>
+                                                                        </div> 
+                                                                        <div class="form-row">
+                                                                            <label class="form-floating col-md-4">End Periode</label>
+                                                                            <label class="form-floating col-md-8">: <?=$endPeriode;?></label>
+                                                                        </div> 
+                                                                        <div class="form-row">
+                                                                            <label class="form-floating col-md-4">Amount</label>
+                                                                            <label class="form-floating col-md-8">: <?=$amount;?></label>
+                                                                        </div> 
+                                                                        <div class="form-row">
+                                                                            <label class="form-floating col-md-4">Comments</label>
+                                                                            <label class="form-floating col-md-8">: <?=$comments;?></label>
+                                                                        </div> 
                                                                     </div>
                                                                     <div class="modal-footer">
                                                                         <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
                                                                     </div>
+                                                                </div>
                                                             </form>
                                                         </div>
                                                     </div>
@@ -345,7 +433,7 @@
                                                                 <div class="modal-body">
                                                                     <div class="form-group">
                                                                         <div class="form-floating mb-3">
-                                                                            <select style="display:none" name="jobSite" class="form-control custom-select mr-sm-2" id="inlineFormCustomSelect">
+                                                                            <select  name="jobSite" class="form-control custom-select mr-sm-2" id="inlineFormCustomSelect">
                                                                                 <option value="<?=$idJobSite;?>"><?=$jobSiteName;?></option> 
                                                                                 <?php
                                                                                     $getJobSite = mysqli_query($conn, "SELECT * FROM JobSite") or die("Could not search!");
@@ -403,7 +491,7 @@
                                                                                 <label for="inlineFormCustomSelect">ins or UnIns</label>
                                                                             </div>
                                                                             <div class="form-floating col-md-8">
-                                                                                <input type="text" name="pilisNo" placeholder="Polis No" class="form-control" id="floatingInput" value = "<?=$pilisNo;?>" required>
+                                                                                <input type="text" name="polisNo" placeholder="Polis No" class="form-control" id="floatingInput" value = "<?=$polisNo;?>" required>
                                                                                 <label for="floatingInput">Polis No</label>
                                                                             </div>
                                                                         </div>                                                                                                                       
@@ -420,6 +508,7 @@
                                                                                         <option value="usd">USD</option>  
                                                                                     <?php } ?>
                                                                                 </select>
+                                                                                
                                                                                 <label for="inlineFormCustomSelect">Currency</label>
                                                                             </div>
                                                                             <div class="form-floating col-md-5">
@@ -436,12 +525,12 @@
                                                                     <div class="form-floating mb-3">
                                                                         <div class="form-row">
                                                                             <div class="form-floating col-md-4">
-                                                                                <input type="text" name="startPeriode" placeholder="Start Periode" class="form-control" id="floatingInput" data-sb-validations="required" autocomplete="off">
+                                                                                <input type="text" name="startPeriode" placeholder="Start Periode" class="form-control" id="floatingInput" value = "<?=$startPeriode;?>" data-sb-validations="required" autocomplete="off">
                                                                                 <label for="periode">Start Periode</label>
                                                                                 <div class="invalid-feedback" data-sb-feedback="periode:required">A Start Periode is required.</div>
                                                                             </div>
                                                                             <div class="form-floating col-md-4">
-                                                                                <input type="text" name="endPeriode" placeholder="End Periode" class="form-control" id="floatingInput" data-sb-validations="required" autocomplete="off">
+                                                                                <input type="text" name="endPeriode" placeholder="End Periode" class="form-control" id="floatingInput" value = "<?=$endPeriode;?>" data-sb-validations="required" autocomplete="off">
                                                                                 <label for="periode">End Periode</label>
                                                                                 <div class="invalid-feedback" data-sb-feedback="periode:required">A End Periode is required.</div>
                                                                             </div>
@@ -489,6 +578,7 @@
                                                                         <h6>Unit Type : <span class="label label-default"><?=$unitType;?></span></h6>
                                                                     </div>                                                                 <div class="form-floating mb-3">
                                                                     <input type="hidden" name="idInsurance" value="<?=$idInsurance?>" class="form-control">
+                                                                    <input type="hidden" name="endPeriode" value="<?=$endPeriode?>" class="form-control">
                                                                 </div>
                                                                 <div class="modal-footer">
                                                                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
@@ -517,7 +607,7 @@
             <footer class="py-4 bg-light mt-auto bg-white">
                     <div class="container-fluid px-4">
                         <div class="d-flex align-items-center justify-content-between small">
-                        <span>Copyright &copy; Your Website 2021</span>
+                        <span>Copyright &copy; MHD 2021</span>
                     </div>
                 </div>
             </footer>
@@ -620,10 +710,10 @@
                                         <option value="insurance" Selected>Insurance</option> 
                                         <option value="unInsurance">UnInsurance</option> 
                                     </select>
-                                    <label for="inlineFormCustomSelect">ins or UnIns</label>
+                                    <label for="inlineFormCustomSelect">Ins or UnIns</label>
                                 </div>
                                 <div class="form-floating col-md-8">
-                                    <input type="text" name="pilisNo" placeholder="Polis No" class="form-control" id="floatingInput" required>
+                                    <input type="text" name="polisNo" placeholder="Polis No" class="form-control" id="floatingInput" required>
                                     <label for="floatingInput">Polis No</label>
                                 </div>
                             </div>
